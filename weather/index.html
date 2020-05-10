@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+      <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"> -->
+      <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+      <link rel="stylesheet" href="/weather/css/bootstrap.min.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <style>
+        #content
+        {
+          width:40%;
+          margin-right:auto;
+          margin-left:auto;
+          /* border:2px solid orange; */
+          padding:5px;
+          background-color: white;
+        }
+        .jumbotron{
+            background: url("/weather/css/2.png") no-repeat center center;
+            background-size: 100% 100%;
+        }
+      body{
+        /* background-image: url('/weather/css/tenor.gif');
+        background-size: cover;
+
+
+
+        height: 100vh;
+        padding:0;
+        margin:0; */
+      }
+      </style>
+      <title> Wether weather!</title>
+      <script src="/weather/js/jquery-3.5.0.js"></script>
+      <script>
+      $(document).ready(function() {
+        $("#errorMsg").hide();
+        $("#submit").click(function(){
+          // alert($("#city").val());
+          if($("#city").val() == "")
+          {
+            $("#errorMsg").show();
+          }
+          else {
+              $("#errorMsg").hide();
+              getLocationAW($("#city").val())
+          }
+        });
+      });
+
+        async function getLocationAW(city){
+             // alert(`Let's check the weather in ${city}`);
+             const cityName = await fetch(`https://secret-ocean-49799.herokuapp.com/https://www.metaweather.com/api/location/search/?query=${city}`);
+             //console.log(cityName.json());
+             const response = await cityName.json();
+             //console.log(response);
+             const woeid = await response[0].woeid;
+             //alert(typeof(woeid));
+             getWheatherAW(woeid);
+        }
+
+         async function getWheatherAW(woeid){
+             try{
+                //console.log(towoeid);
+                const result = await fetch(`https://secret-ocean-49799.herokuapp.com/https://www.metaweather.com/api/location/${woeid}/`);
+                const data = await result.json();
+                console.log(data);
+
+                const today = await data.consolidated_weather[0];
+                const currentLocation = await data.title;
+                const todayMin = Math.round(today.min_temp);
+                const todayTemp = Math.round(today.the_temp);
+                const todayMax = Math.round(today.max_temp);
+                const todayHumidity = Math.round(today.humidity);
+                const todayDate = today.applicable_date;
+                const todayWeatherStatus = today.weather_state_name;
+                // $("#curTemp").val(todayTemp+"°C");
+                var displayData = "<span> Current Temprature in "+currentLocation+"</span>";
+                displayData += "<h1>"+todayTemp+"°C </h1>";
+                displayData += "<span>"+todayWeatherStatus+"</span><br>";
+                displayData += "<span> Temprature (min-max) - ("+todayMin+" -"+todayMax+" )°C</span><br>";
+                displayData += "<span> Humidity - "+todayHumidity+"</span>";
+                // document.body.style.background = "#f3f3f3 url('/weather/css/cloud.gif') no-repeat";
+                document.getElementById('curTemp').innerHTML = displayData;
+                // console.log(weather_state_name);
+                const tomarrow = await data.consolidated_weather[1];
+                const tomarrowMin = Math.round(tomarrow.min_temp);
+                const tomarrowMax = Math.round(tomarrow.max_temp);
+                const tomarrowTemp = Math.round(tomarrow.the_temp);
+                const tomarrowHumidity = Math.round(tomarrow.humidity);
+                const tomarrowDate = tomarrow.applicable_date;
+                const tomarrowWeatherStatus = tomarrow.weather_state_name;
+
+                const dtomarrow = await data.consolidated_weather[2];
+                const dtomarrowMin = Math.round(dtomarrow.min_temp);
+                const dtomarrowMax = Math.round(dtomarrow.max_temp);
+                const dtomarrowTemp = Math.round(dtomarrow.the_temp);
+                const dtomarrowHumidity = Math.round(dtomarrow.humidity);
+                const dtomarrowDate = dtomarrow.applicable_date;
+                const dtomarrowWeatherStatus = dtomarrow.weather_state_name;
+
+                const datomarrow = await data.consolidated_weather[3];
+                const datomarrowMin = Math.round(datomarrow.min_temp);
+                const datomarrowMax = Math.round(datomarrow.max_temp);
+                const datomarrowTemp = Math.round(datomarrow.the_temp);
+                const datomarrowHumidity = Math.round(datomarrow.humidity);
+                const datomarrowDate = datomarrow.applicable_date;
+                const datomarrowWeatherStatus = datomarrow.weather_state_name;
+
+                var tdata = '<table class="table" style="text-align:center;">';
+                tdata += '<thead class="thead-light"><tr><th></th><th>Tomarrow\'s Weather</th><th>'+`${dtomarrowDate}`+' Weather</th><th>'+`${datomarrowDate}`+' Weather</th></tr></thead>';
+
+                tdata += '<tr><th>Weather Status</th>';
+                tdata += "<td>"+`${tomarrowWeatherStatus}`+"</td>";
+                tdata += "<td>"+`${dtomarrowWeatherStatus}`+"</td>";
+                tdata += "<td>"+`${datomarrowWeatherStatus}`+"</td>";
+                tdata += '</tr>';
+
+                tdata += '<tr>';
+                tdata += "<th>Temperature</th>";
+                tdata += "<td>"+`${tomarrowTemp}`+" °C</td>";
+                tdata += "<td>"+`${dtomarrowTemp}`+" °C</td>";
+                tdata += "<td>"+`${datomarrowTemp}`+" °C</td>";
+                tdata += '</tr>';
+
+                tdata += '<tr>';
+                tdata += "<th>Temp Min and Max</th>";
+                tdata += "<td>"+`${tomarrowMin}`+" °C - "+`${tomarrowMax}`+" °C</td>";
+                tdata += "<td>"+`${dtomarrowMin}`+" °C - "+`${dtomarrowMax}`+" °C</td>";
+                tdata += "<td>"+`${datomarrowMin}`+" °C - "+`${datomarrowMax}`+" °C</td>";
+                tdata += '</tr>';
+
+                tdata += '<tr>';
+                tdata += "<th>Humidity</th>";
+                tdata += "<td>"+`${tomarrowHumidity}`+"</td>";
+                tdata += "<td>"+`${dtomarrowHumidity}`+"</td>";
+                tdata += "<td>"+`${datomarrowHumidity}`+"</td>";
+                tdata += '</tr>';
+                tdata += '</table>';
+                $("#contentTable").html(tdata);
+                // document.getElementById("contentTable").InnerHTML = tdata;
+              }
+              catch(error){
+                  console.log(error);
+                  alert(error);
+              }
+          }
+        </script>
+    </head>
+    <body>
+      <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #cae5ff;" >
+        <a class="navbar-brand" href="#"><i class="fa fa-snowflake-o" style="font-size:30px;color:white"></i>  Wether weather!</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="nav navbar-nav ml-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Features</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">About</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <div class="container">
+      <div class="jumbotron" style="padding:0px;" align=center>
+        <div id="container" align=center>
+          <h1 style="color:orange;"><i class="fa fa-snowflake-o"></i> Wether weather!</h1>
+          <div id="content">
+            <form role="location Search">
+                <div id="errorMsg" class="alert alert-warning alert-dismissible fade show" style="display:none;">
+                  <button type="button" class="close" data-dismiss="alert">&times;</button>
+                  <strong>Error!</strong> Enter the Location You want to search.
+                </div>
+                  <div class="form-group">
+                    <input type="text" class="form-control" id="city" name="city" placeholder="Search location" required>
+                  </div>
+                  <button type="button" id="submit" class="btn btn-info">Submit</button>
+            </form>
+          </div>
+      </div>
+    </div>
+  </div>
+  <div class="container" align=center>
+    <span id="curTemp"></span>
+  </div>
+  <div class="row" id="contentTable" style="width:70%;margin-right:auto;margin-left:auto;padding:5px;">
+  </div>
+  <script src="/weather/js/bootstrap.min.js"> </script>
+  </body>
+  </html>

@@ -1,0 +1,27 @@
+/* import fonts from fonts.css */
+@import url(/fonts.css);
+
+/* start nav */
+
+
+.navbar-brand{
+    padding: 0 2rem 0 5rem;
+}
+.navbar{
+    padding: 1rem 20rem ;
+}
+.nav-link{
+    font: normal 500 15px/2px var(--roboto);
+    text-transform: uppercase;
+    padding: 1.7rem;
+    color: black;
+}
+.active a{
+    background: var(--gradient-color);
+    background-clip: text;
+}
+.navbar-nav a:hover{
+    background: var(--gradient-color);
+    background-clip: text;
+    color:Red;
+}
