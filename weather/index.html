@@ -1,200 +1,216 @@
 <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
-      <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"> -->
-      <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
-      <link rel="stylesheet" href="/weather/css/bootstrap.min.css">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-      <style>
-        #content
-        {
-          width:40%;
-          margin-right:auto;
-          margin-left:auto;
-          /* border:2px solid orange; */
-          padding:5px;
-          background-color: white;
-        }
-        .jumbotron{
-            background: url("/weather/css/2.png") no-repeat center center;
-            background-size: 100% 100%;
-        }
-      body{
-        /* background-image: url('/weather/css/tenor.gif');
-        background-size: cover;
+<html lang="en">
 
+<head>
 
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-        height: 100vh;
-        padding:0;
-        margin:0; */
-      }
-      </style>
-      <title> Wether weather!</title>
-      <script src="/weather/js/jquery-3.5.0.js"></script>
-      <script>
-      $(document).ready(function() {
-        $("#errorMsg").hide();
-        $("#submit").click(function(){
-          // alert($("#city").val());
-          if($("#city").val() == "")
-          {
-            $("#errorMsg").show();
-          }
-          else {
-              $("#errorMsg").hide();
-              getLocationAW($("#city").val())
-          }
-        });
-      });
+  <title>Scrolling Nav - Start Bootstrap Template</title>
 
-        async function getLocationAW(city){
-             // alert(`Let's check the weather in ${city}`);
-             const cityName = await fetch(`https://secret-ocean-49799.herokuapp.com/https://www.metaweather.com/api/location/search/?query=${city}`);
-             //console.log(cityName.json());
-             const response = await cityName.json();
-             //console.log(response);
-             const woeid = await response[0].woeid;
-             //alert(typeof(woeid));
-             getWheatherAW(woeid);
-        }
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-         async function getWheatherAW(woeid){
-             try{
-                //console.log(towoeid);
-                const result = await fetch(`https://secret-ocean-49799.herokuapp.com/https://www.metaweather.com/api/location/${woeid}/`);
-                const data = await result.json();
-                console.log(data);
+  <!-- Custom styles for this template -->
+  <link href="css/scrolling-nav.css" rel="stylesheet">
 
-                const today = await data.consolidated_weather[0];
-                const currentLocation = await data.title;
-                const todayMin = Math.round(today.min_temp);
-                const todayTemp = Math.round(today.the_temp);
-                const todayMax = Math.round(today.max_temp);
-                const todayHumidity = Math.round(today.humidity);
-                const todayDate = today.applicable_date;
-                const todayWeatherStatus = today.weather_state_name;
-                // $("#curTemp").val(todayTemp+"°C");
-                var displayData = "<span> Current Temprature in "+currentLocation+"</span>";
-                displayData += "<h1>"+todayTemp+"°C </h1>";
-                displayData += "<span>"+todayWeatherStatus+"</span><br>";
-                displayData += "<span> Temprature (min-max) - ("+todayMin+" -"+todayMax+" )°C</span><br>";
-                displayData += "<span> Humidity - "+todayHumidity+"</span>";
-                // document.body.style.background = "#f3f3f3 url('/weather/css/cloud.gif') no-repeat";
-                document.getElementById('curTemp').innerHTML = displayData;
-                // console.log(weather_state_name);
-                const tomarrow = await data.consolidated_weather[1];
-                const tomarrowMin = Math.round(tomarrow.min_temp);
-                const tomarrowMax = Math.round(tomarrow.max_temp);
-                const tomarrowTemp = Math.round(tomarrow.the_temp);
-                const tomarrowHumidity = Math.round(tomarrow.humidity);
-                const tomarrowDate = tomarrow.applicable_date;
-                const tomarrowWeatherStatus = tomarrow.weather_state_name;
+    <style media="screen">
 
-                const dtomarrow = await data.consolidated_weather[2];
-                const dtomarrowMin = Math.round(dtomarrow.min_temp);
-                const dtomarrowMax = Math.round(dtomarrow.max_temp);
-                const dtomarrowTemp = Math.round(dtomarrow.the_temp);
-                const dtomarrowHumidity = Math.round(dtomarrow.humidity);
-                const dtomarrowDate = dtomarrow.applicable_date;
-                const dtomarrowWeatherStatus = dtomarrow.weather_state_name;
-
-                const datomarrow = await data.consolidated_weather[3];
-                const datomarrowMin = Math.round(datomarrow.min_temp);
-                const datomarrowMax = Math.round(datomarrow.max_temp);
-                const datomarrowTemp = Math.round(datomarrow.the_temp);
-                const datomarrowHumidity = Math.round(datomarrow.humidity);
-                const datomarrowDate = datomarrow.applicable_date;
-                const datomarrowWeatherStatus = datomarrow.weather_state_name;
-
-                var tdata = '<table class="table" style="text-align:center;">';
-                tdata += '<thead class="thead-light"><tr><th></th><th>Tomarrow\'s Weather</th><th>'+`${dtomarrowDate}`+' Weather</th><th>'+`${datomarrowDate}`+' Weather</th></tr></thead>';
-
-                tdata += '<tr><th>Weather Status</th>';
-                tdata += "<td>"+`${tomarrowWeatherStatus}`+"</td>";
-                tdata += "<td>"+`${dtomarrowWeatherStatus}`+"</td>";
-                tdata += "<td>"+`${datomarrowWeatherStatus}`+"</td>";
-                tdata += '</tr>';
-
-                tdata += '<tr>';
-                tdata += "<th>Temperature</th>";
-                tdata += "<td>"+`${tomarrowTemp}`+" °C</td>";
-                tdata += "<td>"+`${dtomarrowTemp}`+" °C</td>";
-                tdata += "<td>"+`${datomarrowTemp}`+" °C</td>";
-                tdata += '</tr>';
-
-                tdata += '<tr>';
-                tdata += "<th>Temp Min and Max</th>";
-                tdata += "<td>"+`${tomarrowMin}`+" °C - "+`${tomarrowMax}`+" °C</td>";
-                tdata += "<td>"+`${dtomarrowMin}`+" °C - "+`${dtomarrowMax}`+" °C</td>";
-                tdata += "<td>"+`${datomarrowMin}`+" °C - "+`${datomarrowMax}`+" °C</td>";
-                tdata += '</tr>';
-
-                tdata += '<tr>';
-                tdata += "<th>Humidity</th>";
-                tdata += "<td>"+`${tomarrowHumidity}`+"</td>";
-                tdata += "<td>"+`${dtomarrowHumidity}`+"</td>";
-                tdata += "<td>"+`${datomarrowHumidity}`+"</td>";
-                tdata += '</tr>';
-                tdata += '</table>';
-                $("#contentTable").html(tdata);
-                // document.getElementById("contentTable").InnerHTML = tdata;
-              }
-              catch(error){
-                  console.log(error);
-                  alert(error);
-              }
-          }
-        </script>
-    </head>
-    <body>
-      <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #cae5ff;" >
-        <a class="navbar-brand" href="#"><i class="fa fa-snowflake-o" style="font-size:30px;color:white"></i>  Wether weather!</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+.navbar
+{
+  background-image: url(https://www.jacaranda.com.au/wp-content/uploads/2017/11/bg-nav-bar-e1522125676147.jpg);
+  font-family: Verdana,sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  letter-spacing: 3px;
+  background-color: #c2c2c294;
+}
+/*html, body{*/
+    /*font-family: Verdana,sans-serif;*/
+    /*font-size: 15px;
+    line-height: 1.5;
+    letter-spacing: 3px;*/
+    /*background-image: url(https://cdn5.f-cdn.com/contestentries/1370548/29833877/5b4f15b1ea4aa_thumb900.jpg);*/
+/*}*/
+.navbar-brand{
+    /* padding: 0 2rem 0 5rem; */
+    padding-left: 15px;
+    color: white;
+}
+.navbar-brand:hover {
+    color: #5b0aff;
+    background: #e0e0e0;
+}
+.nav-link{
+    color: white;
+    /*background: #e0e0e0;*/
+}
+.nav-link:hover {
+    color: #5b0aff;
+    background: #e0e0e0;
+}
+.carousel-item {
+  height: 80vh;
+  min-height: 350px;
+  background: no-repeat center center scroll;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+    </style>
+  </head>
+  <body>
+        <nav class="navbar navbar-expand-lg fixed-top" style="box-shadow: 5px 2px 5px #3b3d5d; padding: 0px;">
+        <!-- <a href="#home" class="navbar-brand"><strong style="color: white;">AS</strong> Adobe Spark</a> -->
+        <a class="navbar-brand js-scroll-trigger" href="#carouselExampleIndicators" style="margin-left: 20px;"><small style="font-family: 'Bad Script';font-size:40px;"><b>Revolution</b><img style="vertical-align: top; margin-left: 0px;" src="/work/img/bird.png" alt="logo"></small></a>
+        <button style="color: white;" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="nav navbar-nav ml-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="#">Home</a>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#about">About</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Features</a>
+              <a class="nav-link js-scroll-trigger" href="#Design">Design</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">About</a>
+                <a class="nav-link js-scroll-trigger" href="#services">Service</a>
+              </li>
+            <li class="nav-item">
+                <a class="nav-link js-scroll-trigger" href="#Blog">Blog</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
             </li>
           </ul>
         </div>
       </nav>
-      <div class="container">
-      <div class="jumbotron" style="padding:0px;" align=center>
-        <div id="container" align=center>
-          <h1 style="color:orange;"><i class="fa fa-snowflake-o"></i> Wether weather!</h1>
-          <div id="content">
-            <form role="location Search">
-                <div id="errorMsg" class="alert alert-warning alert-dismissible fade show" style="display:none;">
-                  <button type="button" class="close" data-dismiss="alert">&times;</button>
-                  <strong>Error!</strong> Enter the Location You want to search.
-                </div>
-                  <div class="form-group">
-                    <input type="text" class="form-control" id="city" name="city" placeholder="Search location" required>
-                  </div>
-                  <button type="button" id="submit" class="btn btn-info">Submit</button>
-            </form>
-          </div>
+<!--   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+    <div class="container">
+      <a class="navbar-brand js-scroll-trigger" href="#page-top">Start Bootstrap</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#about">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#services">Services</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
+          </li>
+        </ul>
       </div>
     </div>
+  </nav>
+ -->
+  <header>
+  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+      <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner" role="listbox">
+      <!-- Slide One - Set the background image for this slide in the line below -->
+      <div class="carousel-item active" style="background-image: url('file:///C:/Users/Sharvin%20Thej/Downloads/silhouette-of-mountains-1323550.jpg')">
+          <h2>First Slide</h2>
+        <div class="carousel-caption d-none d-md-block">
+          <h2 class="display-4">First Slide</h2>
+          <p class="lead">This is a description for the first slide.</p>
+        </div>
+      </div>
+      <!-- Slide Two - Set the background image for this slide in the line below -->
+      <div class="carousel-item" style="background-image: url('file:///C:/Users/Sharvin%20Thej/Downloads/background-blur-clean-clear-531880.jpg')">
+        <div class="carousel-caption d-none d-md-block">
+          <h2 class="display-4">Second Slide</h2>
+          <p class="lead">This is a description for the second slide.</p>
+        </div>
+      </div>
+      <!-- Slide Three - Set the background image for this slide in the line below -->
+      <div class="carousel-item" style="background-image: url('file:///C:/Users/Sharvin%20Thej/Downloads/1540099.jpg')">
+        <div class="carousel-caption d-none d-md-block">
+          <h2 class="display-4">Third Slide</h2>
+          <p class="lead">This is a description for the third slide.</p>
+        </div>
+      </div>
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
   </div>
-  <div class="container" align=center>
-    <span id="curTemp"></span>
-  </div>
-  <div class="row" id="contentTable" style="width:70%;margin-right:auto;margin-left:auto;padding:5px;">
-  </div>
-  <script src="/weather/js/bootstrap.min.js"> </script>
-  </body>
-  </html>
+</header>
+
+
+  <section id="about">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 mx-auto">
+          <h2>About this page</h2>
+          <p class="lead">This is a great place to talk about your webpage. This template is purposefully unstyled so you can use it as a boilerplate or starting point for you own landing page designs! This template features:</p>
+          <ul>
+            <li>Clickable nav links that smooth scroll to page sections</li>
+            <li>Responsive behavior when clicking nav links perfect for a one page website</li>
+            <li>Bootstrap's scrollspy feature which highlights which section of the page you're on in the navbar</li>
+            <li>Minimal custom CSS so you are free to explore your own unique design options</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services" class="bg-light">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 mx-auto">
+          <h2>Services we offer</h2>
+          <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut optio velit inventore, expedita quo laboriosam possimus ea consequatur vitae, doloribus consequuntur ex. Nemo assumenda laborum vel, labore ut velit dignissimos.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 mx-auto">
+          <h2>Contact us</h2>
+          <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero odio fugiat voluptatem dolor, provident officiis, id iusto! Obcaecati incidunt, qui nihil beatae magnam et repudiandae ipsa exercitationem, in, quo totam.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-5 bg-dark">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy; Your Website 2019</p>
+    </div>
+    <!-- /.container -->
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Plugin JavaScript -->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom JavaScript for this theme -->
+  <script src="js/scrolling-nav.js"></script>
+
+</body>
+
+</html>
